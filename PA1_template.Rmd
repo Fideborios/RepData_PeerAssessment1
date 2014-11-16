@@ -17,7 +17,8 @@ output:
     x.date<-x$date
 
 ## Drawing the Histogram of the total number of steps taken each day
-qplot(total.steps,margins = FALSE, binwidth = 1000, geom = "auto", xlab = "total number of steps taken each day")
+    qplot(total.steps,margins = FALSE, binwidth = 1000, geom = "auto", 
+    xlab = "total number of steps taken each day")
 
 ## Calculate and report the mean and median 
     mean(total.steps, na.rm = TRUE)
@@ -72,8 +73,9 @@ qplot(total.steps,margins = FALSE, binwidth = 1000, geom = "auto", xlab = "total
     median(total.steps)
     10766.19
 
-## Are there differences in activity patterns between weekdays and weekends?
-# Create a new factor variable
+# Are there differences in activity patterns between weekdays and weekends?
+
+### Create a new factor variable
     weekday.or.weekend <- function(date) {
     day <- weekdays(date)
     if (day %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"))
@@ -88,3 +90,6 @@ qplot(total.steps,margins = FALSE, binwidth = 1000, geom = "auto", xlab = "total
     filled.x$day <- sapply(filled.x$date, FUN=weekday.or.weekend)
 
 ## Make a panel plot 
+    averages <- aggregate(steps ~ interval + day, data=filled.x, mean)
+    ggplot(averages, aes(interval, steps)) + geom_line() + facet_grid(day ~ .) +
+    xlab("5-minute interval") + ylab("Number of steps")
